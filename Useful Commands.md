@@ -1,3 +1,14 @@
+# Useful Commands  
+
+## Run the Code
+
+### Frontend  
+npx serve .  
+
+### Backend  
+go run main.go  
+
+## Add new data in the database
 DO $$
 DECLARE
     start_date DATE := current_date - INTERVAL '29 days';
@@ -14,19 +25,7 @@ BEGIN
             (dev_id, d, (FLOOR(random() * 3 + 1))::SMALLINT),
             (dev_id, d, (FLOOR(random() * 3 + 1))::SMALLINT);
     END LOOP;
-END $$;
-
-
-
-# Useful Commands 
-
-## Run
-
-## Frontend
-npx serve .  
-
-## Backend
-go run main.go  
+END $$;  
 
 ## Install PostgreSQL locally
 Linux (Ubuntu/Debian):    
@@ -39,21 +38,23 @@ sudo -i -u postgres
 psql  
 \c moodtracker 
 
-## Access the PostgreSQL command line (Mac)
+## Access the PostgreSQL command line & its commands (Mac)
 psql -U postgres  
+
 \c moodtracker  
 
-SELECT * FROM devices  
+SELECT * FROM devices;  
 
-SELECT * FROM prototypedevice  
+SELECT * FROM prototypedevice;  
 
 curl -X POST http://localhost:8080/addMood \  
 -H "Content-Type: application/json" \  
 -d '{"device_id":1,"mood":3}'  
 
+SELECT * FROM prototypedevice WHERE entry_date = CURRENT_DATE;  
+
 ## Create project database and user
 Table names are case senstive, everything is in lower case  
-Create your project database and user   
 
 CREATE DATABASE moodtracker;  
 
@@ -75,32 +76,28 @@ CREATE TABLE prototypedevice (
     mood SMALLINT NOT NULL  
 );  
 
--- Replace <username> with the role your Go app uses  
+-- Replace <username> with the role your Go app uses --    
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE devices TO admin;  
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE prototypedevice TO admin;  
 
--- Replace 'admin' with your DB user if different  
+-- Replace 'admin' with your DB user if different --    
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE prototypedevice_id_seq TO admin;   
 
 ## Alter Table
-ALTER TABLE devices ADD COLUMN last_triggered DATE DEFAULT NULL;
-
+ALTER TABLE devices ADD COLUMN last_triggered DATE DEFAULT NULL;  
 
 ## Quit database
 \q
 
 ## List all databases
-\l 
+\l
 
 ## List the relations in a database
 \dt
 
 ## In API folder terminal  
 Install the PostgreSQL driver    
-go get github.com/lib/pq   
-
-## Command to run main.go  
-go run main.go  
+go get github.com/lib/pq     
 
 ## Golang Code 
 
