@@ -1,0 +1,31 @@
+void checkAlerts() {
+  if (millis() - lastAlertCheck >= alertInterval) {
+    lastAlertCheck = millis();
+    
+    String url = "/getAlerts?device_id=1";  // <-- Add device_id here
+    client.beginRequest();
+    client.get(url);
+    client.endRequest();
+    
+    int status = client.responseStatusCode();
+    if (status == 200) {
+      String response = client.responseBody();
+      Serial.println("Alert data: " + response);
+
+      StaticJsonDocument<200> alertDoc;
+      DeserializationError error = deserializeJson(alertDoc, response);
+      if (!error) {
+        bool alert = alertDoc["alert"];
+        int freq = alertDoc["frequency"];
+        int dur = alertDoc["duration"];
+        if (alert) {
+          startBuzzer(freq, dur);
+        }
+      } else {
+        Serial.println("JSON parse error");
+      }
+    } else {
+      Serial.println("Failed to fetch alerts, status: " + String(status));
+    }
+  }
+}
