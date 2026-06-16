@@ -22,6 +22,12 @@ npx start
 go run main.go
 ```
 
+### Web Dashboard Login
+Once the web dashboard loads, log in using:
+* **Username:** `device1`
+* **Password:** `password1`
+
+
 ## PostgreSQL Installation
 ### Linux (Ubuntu / Debian)
 Install and start PostgreSQL locally:
